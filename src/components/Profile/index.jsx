@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from "./profile.module.css"
-import Name from './Name'
-import Social from './Social'
-import Media from './Media'
+import { useDispatch, useSelector } from 'react-redux';
+import { loadProfile } from '../../redux/ducks/application';
+import ProfileInfo from './ProfileInfo';
 
-function Profile(props) {
+function Profile() {
+
+    const dispatch = useDispatch();
+
+    const application = useSelector(state => state.application.items);
+
+
+    useEffect(() => {
+        dispatch(loadProfile());
+    },[])
+
     return (
       <div className={styles.profile}>
-        <Name/>
-        <Social/>
-        <Media/>
+          {application.map(item => {
+              return <ProfileInfo item={item} key={item.id}/>
+          })}
       </div>
     );
 }
